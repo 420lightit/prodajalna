@@ -173,6 +173,7 @@ streznik.post('/izpisiRacunBaza', function(zahteva, odgovor) {
   
 })
 
+
 // Izpis računa v HTML predstavitvi ali izvorni XML obliki
 streznik.get('/izpisiRacun/:oblika', function(zahteva, odgovor) {
   pesmiIzKosarice(zahteva, function(pesmi) {
@@ -183,9 +184,12 @@ streznik.get('/izpisiRacun/:oblika', function(zahteva, odgovor) {
         zato računa ni mogoče pripraviti!</p>");
     } else {
       odgovor.setHeader('content-type', 'text/xml');
-      odgovor.render('eslog', {
-        vizualiziraj: zahteva.params.oblika == 'html' ? true : false,
-        postavkeRacuna: pesmi
+       vrniStranke(function(napaka1, customer) {
+         odgovor.render('eslog', {
+           vizualiziraj: zahteva.params.oblika == 'html' ? true : false,
+           postavkeRacuna: pesmi,
+           stranka: customer[0]
+        })  
       })  
     }
   })
